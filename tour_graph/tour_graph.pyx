@@ -30,7 +30,7 @@ def tour_graph(np.ndarray graph, int start=0, str start_method = 'int', int MAX_
     if seed != -1:
         np.random.seed(seed)
 
-    cdef np.ndarray g = np.asanyarray(graph)
+    cdef np.ndarray g = np.asarray(graph)
     cdef int num_vertices = g.shape[0]
 
     cdef np.ndarray visited = np.zeros(g.shape[0], dtype=np.int)
@@ -61,7 +61,7 @@ def tour_graph(np.ndarray graph, int start=0, str start_method = 'int', int MAX_
     return counter, visit_dict
 
 
-def run_silulation( np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):
+def run_simulation( np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):
     """
     Runs n tours on the given graph and returns the tour time for each tour.
     
