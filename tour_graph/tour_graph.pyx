@@ -3,6 +3,7 @@ cimport numpy as np
 
 def tour_graph(np.ndarray graph, int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):
     """
+    Tours a graph (random walk) and returns tour time and tour stops.
     
     :param graph: (array_like)
         adjacency matrix for the graph to be toured
@@ -62,6 +63,7 @@ def tour_graph(np.ndarray graph, int start=0, str start_method = 'int', int MAX_
 
 def run_silulation( np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):
     """
+    Runs n tours on the given graph and returns the tour time for each tour.
     
     :param graph: (array_like)
         adjacency matrix for the graph to be toured
