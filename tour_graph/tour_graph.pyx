@@ -1,17 +1,20 @@
 import numpy as np
 cimport numpy as np
 
+# np.import_array()
+
 DTYPE = np.int
 ctypedef np.int_t DTYPE_t
 
-
+cimport cython
+@cython.boundscheck(False) # turn of bounds-checking for entire function
 def _tour_graph(np.ndarray[DTYPE_t, ndim=2] g not None, int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):
     """
     Tours a graph (random walk) and returns tour time and tour stops.
     
     :param g: (np.ndarray[DTYPE_t, ndim=2])
         adjacency matrix for the graph to be toured
-    :param start: (int) defaults to 0
+    :param start: (int >= 0) defaults to 0
         the node at which to start the tour
     :param start_method: (str) defaults to 'int'
         the method used to choose a starting node
@@ -91,6 +94,7 @@ def tour_graph(np.ndarray graph , int start=0, str start_method = 'int', int MAX
     return _tour_graph(g, start=start, start_method=start_method, MAX_ITER=MAX_ITER, seed=seed)
 
 
+@cython.boundscheck(False) # turn of bounds-checking for entire function
 def _run_simulation(np.ndarray[DTYPE_t, ndim=2] graph not None, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):
     """
     Runs n tours on the given graph and returns the tour time for each tour.

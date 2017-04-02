@@ -890,12 +890,12 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "tour_graph.pyx":5
+/* "tour_graph.pyx":7
  * 
  * DTYPE = np.int
  * ctypedef np.int_t DTYPE_t             # <<<<<<<<<<<<<<
  * 
- * 
+ * cimport cython
  */
 typedef __pyx_t_5numpy_int_t __pyx_t_10tour_graph_DTYPE_t;
 /* Declarations.proto */
@@ -1123,9 +1123,6 @@ static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int 
 #else
 #define __Pyx_PyString_Equals __Pyx_PyBytes_Equals
 #endif
-
-/* BufferIndexError.proto */
-static void __Pyx_RaiseBufferIndexError(int axis);
 
 #define __Pyx_BufPtrStrided1d(type, buf, i0, s0) (type)((char*)buf + i0 * s0)
 /* PyObjectCallNoArg.proto */
@@ -1516,6 +1513,8 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
+/* Module declarations from 'cython' */
+
 /* Module declarations from 'tour_graph' */
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_10tour_graph_DTYPE_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_10tour_graph_DTYPE_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_10tour_graph_DTYPE_t), 0 };
 #define __Pyx_MODULE_NAME "tour_graph"
@@ -1663,9 +1662,9 @@ static PyObject *__pyx_codeobj__16;
 static PyObject *__pyx_codeobj__18;
 static PyObject *__pyx_codeobj__20;
 
-/* "tour_graph.pyx":8
- * 
- * 
+/* "tour_graph.pyx":11
+ * cimport cython
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _tour_graph(np.ndarray[DTYPE_t, ndim=2] g not None, int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
  *     """
  *     Tours a graph (random walk) and returns tour time and tour stops.
@@ -1673,7 +1672,7 @@ static PyObject *__pyx_codeobj__20;
 
 /* Python wrapper */
 static PyObject *__pyx_pw_10tour_graph_1_tour_graph(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_10tour_graph__tour_graph[] = "\n    Tours a graph (random walk) and returns tour time and tour stops.\n    \n    :param g: (np.ndarray[DTYPE_t, ndim=2])\n        adjacency matrix for the graph to be toured\n    :param start: (int) defaults to 0\n        the node at which to start the tour\n    :param start_method: (str) defaults to 'int'\n        the method used to choose a starting node\n        'int': indicates that the start (int) argument should be used as the first node\n        'uniform_random': will select the first node at random from all nodes on the graph\n    :param MAX_ITER: (int) defaults to -1\n        maximum number of stops on the tour\n        -1: for no maximum\n    :param seed: (int) defaults to -1\n        sets the seed for the numpy prng\n        -1 for no seed\n    :return:\n        stops: (int)\n            the number of stops on the tour\n        visits: (dict)\n            dictionary with nodes as keys, and lists of the stop times for each node\n    ";
+static char __pyx_doc_10tour_graph__tour_graph[] = "\n    Tours a graph (random walk) and returns tour time and tour stops.\n    \n    :param g: (np.ndarray[DTYPE_t, ndim=2])\n        adjacency matrix for the graph to be toured\n    :param start: (int >= 0) defaults to 0\n        the node at which to start the tour\n    :param start_method: (str) defaults to 'int'\n        the method used to choose a starting node\n        'int': indicates that the start (int) argument should be used as the first node\n        'uniform_random': will select the first node at random from all nodes on the graph\n    :param MAX_ITER: (int) defaults to -1\n        maximum number of stops on the tour\n        -1: for no maximum\n    :param seed: (int) defaults to -1\n        sets the seed for the numpy prng\n        -1 for no seed\n    :return:\n        stops: (int)\n            the number of stops on the tour\n        visits: (dict)\n            dictionary with nodes as keys, and lists of the stop times for each node\n    ";
 static PyMethodDef __pyx_mdef_10tour_graph_1_tour_graph = {"_tour_graph", (PyCFunction)__pyx_pw_10tour_graph_1_tour_graph, METH_VARARGS|METH_KEYWORDS, __pyx_doc_10tour_graph__tour_graph};
 static PyObject *__pyx_pw_10tour_graph_1_tour_graph(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_g = 0;
@@ -1727,7 +1726,7 @@ static PyObject *__pyx_pw_10tour_graph_1_tour_graph(PyObject *__pyx_self, PyObje
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_tour_graph") < 0)) __PYX_ERR(0, 8, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_tour_graph") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1742,32 +1741,32 @@ static PyObject *__pyx_pw_10tour_graph_1_tour_graph(PyObject *__pyx_self, PyObje
     }
     __pyx_v_g = ((PyArrayObject *)values[0]);
     if (values[1]) {
-      __pyx_v_start = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 8, __pyx_L3_error)
+      __pyx_v_start = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
     } else {
       __pyx_v_start = ((int)0);
     }
     __pyx_v_start_method = ((PyObject*)values[2]);
     if (values[3]) {
-      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 8, __pyx_L3_error)
+      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
     } else {
       __pyx_v_MAX_ITER = ((int)-1);
     }
     if (values[4]) {
-      __pyx_v_seed = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_seed == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 8, __pyx_L3_error)
+      __pyx_v_seed = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_seed == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
     } else {
       __pyx_v_seed = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_tour_graph", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 8, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_tour_graph", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tour_graph._tour_graph", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_g), __pyx_ptype_5numpy_ndarray, 0, "g", 0))) __PYX_ERR(0, 8, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_g), __pyx_ptype_5numpy_ndarray, 0, "g", 0))) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 11, __pyx_L1_error)
   __pyx_r = __pyx_pf_10tour_graph__tour_graph(__pyx_self, __pyx_v_g, __pyx_v_start, __pyx_v_start_method, __pyx_v_MAX_ITER, __pyx_v_seed);
 
   /* function exit code */
@@ -1816,11 +1815,11 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
   __pyx_pybuffernd_g.rcbuffer = &__pyx_pybuffer_g;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_g.rcbuffer->pybuffer, (PyObject*)__pyx_v_g, &__Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 8, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_g.rcbuffer->pybuffer, (PyObject*)__pyx_v_g, &__Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 11, __pyx_L1_error)
   }
   __pyx_pybuffernd_g.diminfo[0].strides = __pyx_pybuffernd_g.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_g.diminfo[0].shape = __pyx_pybuffernd_g.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_g.diminfo[1].strides = __pyx_pybuffernd_g.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_g.diminfo[1].shape = __pyx_pybuffernd_g.rcbuffer->pybuffer.shape[1];
 
-  /* "tour_graph.pyx":34
+  /* "tour_graph.pyx":37
  * 
  *     # set seed for prng
  *     if seed != -1:             # <<<<<<<<<<<<<<
@@ -1830,22 +1829,22 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_1 = ((__pyx_v_seed != -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "tour_graph.pyx":35
+    /* "tour_graph.pyx":38
  *     # set seed for prng
  *     if seed != -1:
  *         np.random.seed(seed)             # <<<<<<<<<<<<<<
  * 
  *     cdef int num_vertices = g.shape[0]
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_seed); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_seed); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_seed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_seed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1858,14 +1857,14 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -1874,20 +1873,20 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 38, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
         __Pyx_GIVEREF(__pyx_t_4);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_4);
         __pyx_t_4 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -1895,7 +1894,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "tour_graph.pyx":34
+    /* "tour_graph.pyx":37
  * 
  *     # set seed for prng
  *     if seed != -1:             # <<<<<<<<<<<<<<
@@ -1904,7 +1903,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
   }
 
-  /* "tour_graph.pyx":37
+  /* "tour_graph.pyx":40
  *         np.random.seed(seed)
  * 
  *     cdef int num_vertices = g.shape[0]             # <<<<<<<<<<<<<<
@@ -1913,43 +1912,43 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_num_vertices = (__pyx_v_g->dimensions[0]);
 
-  /* "tour_graph.pyx":39
+  /* "tour_graph.pyx":42
  *     cdef int num_vertices = g.shape[0]
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=1] visited = np.zeros(g.shape[0], dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *     # from my reading, it seams dict will be best here
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_g->dimensions[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_g->dimensions[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 42, __pyx_L1_error)
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_visited.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_visited = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_visited.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 39, __pyx_L1_error)
+      __PYX_ERR(0, 42, __pyx_L1_error)
     } else {__pyx_pybuffernd_visited.diminfo[0].strides = __pyx_pybuffernd_visited.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_visited.diminfo[0].shape = __pyx_pybuffernd_visited.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -1957,64 +1956,64 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
   __pyx_v_visited = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "tour_graph.pyx":42
+  /* "tour_graph.pyx":45
  * 
  *     # from my reading, it seams dict will be best here
  *     cdef dict visit_dict = dict()             # <<<<<<<<<<<<<<
  * 
  *     # implement method for choosing start
  */
-  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_v_visit_dict = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "tour_graph.pyx":45
+  /* "tour_graph.pyx":48
  * 
  *     # implement method for choosing start
  *     if start_method == 'uniform_random':             # <<<<<<<<<<<<<<
  *         start = np.random.randint(0,high=g.shape[0],size=1, dtype=DTYPE)
  * 
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_start_method, __pyx_n_s_uniform_random, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_start_method, __pyx_n_s_uniform_random, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
   __pyx_t_8 = (__pyx_t_1 != 0);
   if (__pyx_t_8) {
 
-    /* "tour_graph.pyx":46
+    /* "tour_graph.pyx":49
  *     # implement method for choosing start
  *     if start_method == 'uniform_random':
  *         start = np.random.randint(0,high=g.shape[0],size=1, dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *     cdef int v = start
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_random); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_random); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_randint); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_randint); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_g->dimensions[0])); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_g->dimensions[0])); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_high, __pyx_t_6) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_high, __pyx_t_6) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_size, __pyx_int_1) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_size, __pyx_int_1) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple_, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple_, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_6); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_6); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_start = __pyx_t_9;
 
-    /* "tour_graph.pyx":45
+    /* "tour_graph.pyx":48
  * 
  *     # implement method for choosing start
  *     if start_method == 'uniform_random':             # <<<<<<<<<<<<<<
@@ -2023,7 +2022,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
   }
 
-  /* "tour_graph.pyx":48
+  /* "tour_graph.pyx":51
  *         start = np.random.randint(0,high=g.shape[0],size=1, dtype=DTYPE)
  * 
  *     cdef int v = start             # <<<<<<<<<<<<<<
@@ -2032,7 +2031,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_v = __pyx_v_start;
 
-  /* "tour_graph.pyx":49
+  /* "tour_graph.pyx":52
  * 
  *     cdef int v = start
  *     visited[v] = 1 # make the first stop             # <<<<<<<<<<<<<<
@@ -2040,18 +2039,10 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  * 
  */
   __pyx_t_10 = __pyx_v_v;
-  __pyx_t_9 = -1;
-  if (__pyx_t_10 < 0) {
-    __pyx_t_10 += __pyx_pybuffernd_visited.diminfo[0].shape;
-    if (unlikely(__pyx_t_10 < 0)) __pyx_t_9 = 0;
-  } else if (unlikely(__pyx_t_10 >= __pyx_pybuffernd_visited.diminfo[0].shape)) __pyx_t_9 = 0;
-  if (unlikely(__pyx_t_9 != -1)) {
-    __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 49, __pyx_L1_error)
-  }
+  if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_pybuffernd_visited.diminfo[0].shape;
   *__Pyx_BufPtrStrided1d(__pyx_t_10tour_graph_DTYPE_t *, __pyx_pybuffernd_visited.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_visited.diminfo[0].strides) = 1;
 
-  /* "tour_graph.pyx":50
+  /* "tour_graph.pyx":53
  *     cdef int v = start
  *     visited[v] = 1 # make the first stop
  *     cdef int counter = 0             # <<<<<<<<<<<<<<
@@ -2060,7 +2051,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_counter = 0;
 
-  /* "tour_graph.pyx":52
+  /* "tour_graph.pyx":55
  *     cdef int counter = 0
  * 
  *     while visited.sum() != num_vertices:             # <<<<<<<<<<<<<<
@@ -2068,7 +2059,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  *         v = np.random.choice(np.arange(g.shape[0])[g[v,:] > 0])
  */
   while (1) {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_visited), __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_visited), __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2081,23 +2072,23 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       }
     }
     if (__pyx_t_4) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 55, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 55, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_num_vertices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_num_vertices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_2, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_2, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (!__pyx_t_8) break;
 
-    /* "tour_graph.pyx":53
+    /* "tour_graph.pyx":56
  * 
  *     while visited.sum() != num_vertices:
  *         counter += 1             # <<<<<<<<<<<<<<
@@ -2106,27 +2097,27 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
     __pyx_v_counter = (__pyx_v_counter + 1);
 
-    /* "tour_graph.pyx":54
+    /* "tour_graph.pyx":57
  *     while visited.sum() != num_vertices:
  *         counter += 1
  *         v = np.random.choice(np.arange(g.shape[0])[g[v,:] > 0])             # <<<<<<<<<<<<<<
  *         visited[v] = 1
  *         if v in visit_dict.keys():
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_random); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_random); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_choice); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_choice); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_arange); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_arange); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_g->dimensions[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_g->dimensions[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_11 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -2139,14 +2130,14 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       }
     }
     if (!__pyx_t_11) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_6);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_3};
-        __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2155,28 +2146,28 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_3};
-        __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else
       #endif
       {
-        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11); __pyx_t_11 = NULL;
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_5);
@@ -2184,12 +2175,12 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
     __Pyx_GIVEREF(__pyx_slice__2);
     PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_slice__2);
     __pyx_t_5 = 0;
-    __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_g), __pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_g), __pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_12 = PyObject_RichCompare(__pyx_t_5, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_12); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_12 = PyObject_RichCompare(__pyx_t_5, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_12); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = PyObject_GetItem(__pyx_t_6, __pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(__pyx_t_6, __pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
@@ -2204,14 +2195,14 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       }
     }
     if (!__pyx_t_12) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_12, __pyx_t_5};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -2220,30 +2211,30 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_12, __pyx_t_5};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_12); __pyx_t_12 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_v = __pyx_t_9;
 
-    /* "tour_graph.pyx":55
+    /* "tour_graph.pyx":58
  *         counter += 1
  *         v = np.random.choice(np.arange(g.shape[0])[g[v,:] > 0])
  *         visited[v] = 1             # <<<<<<<<<<<<<<
@@ -2251,53 +2242,45 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  *             visit_dict[v].append(counter)
  */
     __pyx_t_13 = __pyx_v_v;
-    __pyx_t_9 = -1;
-    if (__pyx_t_13 < 0) {
-      __pyx_t_13 += __pyx_pybuffernd_visited.diminfo[0].shape;
-      if (unlikely(__pyx_t_13 < 0)) __pyx_t_9 = 0;
-    } else if (unlikely(__pyx_t_13 >= __pyx_pybuffernd_visited.diminfo[0].shape)) __pyx_t_9 = 0;
-    if (unlikely(__pyx_t_9 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_9);
-      __PYX_ERR(0, 55, __pyx_L1_error)
-    }
+    if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_pybuffernd_visited.diminfo[0].shape;
     *__Pyx_BufPtrStrided1d(__pyx_t_10tour_graph_DTYPE_t *, __pyx_pybuffernd_visited.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_visited.diminfo[0].strides) = 1;
 
-    /* "tour_graph.pyx":56
+    /* "tour_graph.pyx":59
  *         v = np.random.choice(np.arange(g.shape[0])[g[v,:] > 0])
  *         visited[v] = 1
  *         if v in visit_dict.keys():             # <<<<<<<<<<<<<<
  *             visit_dict[v].append(counter)
  *         else:
  */
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyDict_Keys(__pyx_v_visit_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_Keys(__pyx_v_visit_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_1 = (__pyx_t_8 != 0);
     if (__pyx_t_1) {
 
-      /* "tour_graph.pyx":57
+      /* "tour_graph.pyx":60
  *         visited[v] = 1
  *         if v in visit_dict.keys():
  *             visit_dict[v].append(counter)             # <<<<<<<<<<<<<<
  *         else:
  *             visit_dict[v] = [counter]
  */
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = __Pyx_PyDict_GetItem(__pyx_v_visit_dict, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyDict_GetItem(__pyx_v_visit_dict, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_counter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_counter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_14 = __Pyx_PyObject_Append(__pyx_t_4, __pyx_t_2); if (unlikely(__pyx_t_14 == -1)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_Append(__pyx_t_4, __pyx_t_2); if (unlikely(__pyx_t_14 == -1)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "tour_graph.pyx":56
+      /* "tour_graph.pyx":59
  *         v = np.random.choice(np.arange(g.shape[0])[g[v,:] > 0])
  *         visited[v] = 1
  *         if v in visit_dict.keys():             # <<<<<<<<<<<<<<
@@ -2307,7 +2290,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       goto __pyx_L7;
     }
 
-    /* "tour_graph.pyx":59
+    /* "tour_graph.pyx":62
  *             visit_dict[v].append(counter)
  *         else:
  *             visit_dict[v] = [counter]             # <<<<<<<<<<<<<<
@@ -2315,22 +2298,22 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  *             if counter >=MAX_ITER:
  */
     /*else*/ {
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_counter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_counter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_2);
       PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(PyDict_SetItem(__pyx_v_visit_dict, __pyx_t_2, __pyx_t_4) < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
+      if (unlikely(PyDict_SetItem(__pyx_v_visit_dict, __pyx_t_2, __pyx_t_4) < 0)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __pyx_L7:;
 
-    /* "tour_graph.pyx":60
+    /* "tour_graph.pyx":63
  *         else:
  *             visit_dict[v] = [counter]
  *         if MAX_ITER != -1:             # <<<<<<<<<<<<<<
@@ -2340,7 +2323,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_1 = ((__pyx_v_MAX_ITER != -1L) != 0);
     if (__pyx_t_1) {
 
-      /* "tour_graph.pyx":61
+      /* "tour_graph.pyx":64
  *             visit_dict[v] = [counter]
  *         if MAX_ITER != -1:
  *             if counter >=MAX_ITER:             # <<<<<<<<<<<<<<
@@ -2350,20 +2333,20 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_1 = ((__pyx_v_counter >= __pyx_v_MAX_ITER) != 0);
       if (__pyx_t_1) {
 
-        /* "tour_graph.pyx":62
+        /* "tour_graph.pyx":65
  *         if MAX_ITER != -1:
  *             if counter >=MAX_ITER:
  *                 raise StopIteration('number of iterations has reached specified MAX_ITER.')             # <<<<<<<<<<<<<<
  * 
  *     return counter, visit_dict
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_StopIteration, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_StopIteration, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 65, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __PYX_ERR(0, 62, __pyx_L1_error)
+        __PYX_ERR(0, 65, __pyx_L1_error)
 
-        /* "tour_graph.pyx":61
+        /* "tour_graph.pyx":64
  *             visit_dict[v] = [counter]
  *         if MAX_ITER != -1:
  *             if counter >=MAX_ITER:             # <<<<<<<<<<<<<<
@@ -2372,7 +2355,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  */
       }
 
-      /* "tour_graph.pyx":60
+      /* "tour_graph.pyx":63
  *         else:
  *             visit_dict[v] = [counter]
  *         if MAX_ITER != -1:             # <<<<<<<<<<<<<<
@@ -2382,7 +2365,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
     }
   }
 
-  /* "tour_graph.pyx":64
+  /* "tour_graph.pyx":67
  *                 raise StopIteration('number of iterations has reached specified MAX_ITER.')
  * 
  *     return counter, visit_dict             # <<<<<<<<<<<<<<
@@ -2390,9 +2373,9 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
  * def tour_graph(np.ndarray graph , int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_counter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_counter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
@@ -2404,9 +2387,9 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "tour_graph.pyx":8
- * 
- * 
+  /* "tour_graph.pyx":11
+ * cimport cython
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _tour_graph(np.ndarray[DTYPE_t, ndim=2] g not None, int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
  *     """
  *     Tours a graph (random walk) and returns tour time and tour stops.
@@ -2442,7 +2425,7 @@ static PyObject *__pyx_pf_10tour_graph__tour_graph(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "tour_graph.pyx":66
+/* "tour_graph.pyx":69
  *     return counter, visit_dict
  * 
  * def tour_graph(np.ndarray graph , int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
@@ -2506,7 +2489,7 @@ static PyObject *__pyx_pw_10tour_graph_3tour_graph(PyObject *__pyx_self, PyObjec
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "tour_graph") < 0)) __PYX_ERR(0, 66, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "tour_graph") < 0)) __PYX_ERR(0, 69, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2521,32 +2504,32 @@ static PyObject *__pyx_pw_10tour_graph_3tour_graph(PyObject *__pyx_self, PyObjec
     }
     __pyx_v_graph = ((PyArrayObject *)values[0]);
     if (values[1]) {
-      __pyx_v_start = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+      __pyx_v_start = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
     } else {
       __pyx_v_start = ((int)0);
     }
     __pyx_v_start_method = ((PyObject*)values[2]);
     if (values[3]) {
-      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
     } else {
       __pyx_v_MAX_ITER = ((int)-1);
     }
     if (values[4]) {
-      __pyx_v_seed = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_seed == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+      __pyx_v_seed = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_seed == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
     } else {
       __pyx_v_seed = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("tour_graph", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 66, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("tour_graph", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 69, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tour_graph.tour_graph", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph), __pyx_ptype_5numpy_ndarray, 1, "graph", 0))) __PYX_ERR(0, 66, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph), __pyx_ptype_5numpy_ndarray, 1, "graph", 0))) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 69, __pyx_L1_error)
   __pyx_r = __pyx_pf_10tour_graph_2tour_graph(__pyx_self, __pyx_v_graph, __pyx_v_start, __pyx_v_start_method, __pyx_v_MAX_ITER, __pyx_v_seed);
 
   /* function exit code */
@@ -2568,30 +2551,30 @@ static PyObject *__pyx_pf_10tour_graph_2tour_graph(CYTHON_UNUSED PyObject *__pyx
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("tour_graph", 0);
 
-  /* "tour_graph.pyx":90
+  /* "tour_graph.pyx":93
  *             dictionary with nodes as keys, and lists of the stop times for each node
  *     """
  *     g = np.asarray(graph, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     return _tour_graph(g, start=start, start_method=start_method, MAX_ITER=MAX_ITER, seed=seed)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)__pyx_v_graph));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_graph));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_graph));
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2599,7 +2582,7 @@ static PyObject *__pyx_pf_10tour_graph_2tour_graph(CYTHON_UNUSED PyObject *__pyx
   __pyx_v_g = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "tour_graph.pyx":91
+  /* "tour_graph.pyx":94
  *     """
  *     g = np.asarray(graph, dtype=DTYPE)
  *     return _tour_graph(g, start=start, start_method=start_method, MAX_ITER=MAX_ITER, seed=seed)             # <<<<<<<<<<<<<<
@@ -2607,29 +2590,29 @@ static PyObject *__pyx_pf_10tour_graph_2tour_graph(CYTHON_UNUSED PyObject *__pyx
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_tour_graph); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_tour_graph); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_g);
   __Pyx_GIVEREF(__pyx_v_g);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_g);
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start_method, __pyx_v_start_method) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_MAX_ITER); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start_method, __pyx_v_start_method) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_MAX_ITER); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_MAX_ITER, __pyx_t_2) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_MAX_ITER, __pyx_t_2) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_seed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_seed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_seed, __pyx_t_2) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_seed, __pyx_t_2) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2638,7 +2621,7 @@ static PyObject *__pyx_pf_10tour_graph_2tour_graph(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "tour_graph.pyx":66
+  /* "tour_graph.pyx":69
  *     return counter, visit_dict
  * 
  * def tour_graph(np.ndarray graph , int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
@@ -2661,9 +2644,9 @@ static PyObject *__pyx_pf_10tour_graph_2tour_graph(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "tour_graph.pyx":94
+/* "tour_graph.pyx":98
  * 
- * 
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _run_simulation(np.ndarray[DTYPE_t, ndim=2] graph not None, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
  *     """
  *     Runs n tours on the given graph and returns the tour time for each tour.
@@ -2725,7 +2708,7 @@ static PyObject *__pyx_pw_10tour_graph_5_run_simulation(PyObject *__pyx_self, Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_run_simulation") < 0)) __PYX_ERR(0, 94, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_run_simulation") < 0)) __PYX_ERR(0, 98, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2740,32 +2723,32 @@ static PyObject *__pyx_pw_10tour_graph_5_run_simulation(PyObject *__pyx_self, Py
     }
     __pyx_v_graph = ((PyArrayObject *)values[0]);
     if (values[1]) {
-      __pyx_v_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L3_error)
+      __pyx_v_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
     } else {
       __pyx_v_n = ((int)0x3E8);
     }
     if (values[2]) {
-      __pyx_v_start = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L3_error)
+      __pyx_v_start = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
     } else {
       __pyx_v_start = ((int)0);
     }
     __pyx_v_start_method = ((PyObject*)values[3]);
     if (values[4]) {
-      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L3_error)
+      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
     } else {
       __pyx_v_MAX_ITER = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_run_simulation", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 94, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_run_simulation", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 98, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tour_graph._run_simulation", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph), __pyx_ptype_5numpy_ndarray, 0, "graph", 0))) __PYX_ERR(0, 94, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph), __pyx_ptype_5numpy_ndarray, 0, "graph", 0))) __PYX_ERR(0, 98, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 98, __pyx_L1_error)
   __pyx_r = __pyx_pf_10tour_graph_4_run_simulation(__pyx_self, __pyx_v_graph, __pyx_v_n, __pyx_v_start, __pyx_v_start_method, __pyx_v_MAX_ITER);
 
   /* function exit code */
@@ -2795,7 +2778,6 @@ static PyObject *__pyx_pf_10tour_graph_4_run_simulation(CYTHON_UNUSED PyObject *
   int __pyx_t_7;
   __pyx_t_10tour_graph_DTYPE_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
-  int __pyx_t_10;
   __Pyx_RefNannySetupContext("_run_simulation", 0);
   __pyx_pybuffer_data.pybuffer.buf = NULL;
   __pyx_pybuffer_data.refcount = 0;
@@ -2807,47 +2789,47 @@ static PyObject *__pyx_pf_10tour_graph_4_run_simulation(CYTHON_UNUSED PyObject *
   __pyx_pybuffernd_graph.rcbuffer = &__pyx_pybuffer_graph;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_graph.rcbuffer->pybuffer, (PyObject*)__pyx_v_graph, &__Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_graph.rcbuffer->pybuffer, (PyObject*)__pyx_v_graph, &__Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 98, __pyx_L1_error)
   }
   __pyx_pybuffernd_graph.diminfo[0].strides = __pyx_pybuffernd_graph.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_graph.diminfo[0].shape = __pyx_pybuffernd_graph.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_graph.diminfo[1].strides = __pyx_pybuffernd_graph.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_graph.diminfo[1].shape = __pyx_pybuffernd_graph.rcbuffer->pybuffer.shape[1];
 
-  /* "tour_graph.pyx":113
+  /* "tour_graph.pyx":117
  *     :return: (numpy array) tour times for each tour
  *     """
  *     cdef np.ndarray[DTYPE_t, ndim=1] data = np.zeros(n, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     cdef int i
  *     for i in range(n):
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 117, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_data.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_10tour_graph_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_data = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_data.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 113, __pyx_L1_error)
+      __PYX_ERR(0, 117, __pyx_L1_error)
     } else {__pyx_pybuffernd_data.diminfo[0].strides = __pyx_pybuffernd_data.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data.diminfo[0].shape = __pyx_pybuffernd_data.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -2855,7 +2837,7 @@ static PyObject *__pyx_pf_10tour_graph_4_run_simulation(CYTHON_UNUSED PyObject *
   __pyx_v_data = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "tour_graph.pyx":115
+  /* "tour_graph.pyx":119
  *     cdef np.ndarray[DTYPE_t, ndim=1] data = np.zeros(n, dtype=DTYPE)
  *     cdef int i
  *     for i in range(n):             # <<<<<<<<<<<<<<
@@ -2866,55 +2848,47 @@ static PyObject *__pyx_pf_10tour_graph_4_run_simulation(CYTHON_UNUSED PyObject *
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "tour_graph.pyx":116
+    /* "tour_graph.pyx":120
  *     cdef int i
  *     for i in range(n):
  *         data[i] = tour_graph(graph, start=start, start_method=start_method, MAX_ITER=MAX_ITER)[0]             # <<<<<<<<<<<<<<
  *     return data
  * 
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(((PyObject *)__pyx_v_graph));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_graph));
     PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_graph));
-    __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_start_method, __pyx_v_start_method) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_MAX_ITER); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_start_method, __pyx_v_start_method) < 0) __PYX_ERR(0, 120, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_MAX_ITER); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_MAX_ITER, __pyx_t_2) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_MAX_ITER, __pyx_t_2) < 0) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_8 = __Pyx_PyInt_As_npy_long(__pyx_t_3); if (unlikely((__pyx_t_8 == ((npy_long)-1)) && PyErr_Occurred())) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_As_npy_long(__pyx_t_3); if (unlikely((__pyx_t_8 == ((npy_long)-1)) && PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_9 = __pyx_v_i;
-    __pyx_t_10 = -1;
-    if (__pyx_t_9 < 0) {
-      __pyx_t_9 += __pyx_pybuffernd_data.diminfo[0].shape;
-      if (unlikely(__pyx_t_9 < 0)) __pyx_t_10 = 0;
-    } else if (unlikely(__pyx_t_9 >= __pyx_pybuffernd_data.diminfo[0].shape)) __pyx_t_10 = 0;
-    if (unlikely(__pyx_t_10 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_10);
-      __PYX_ERR(0, 116, __pyx_L1_error)
-    }
+    if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_pybuffernd_data.diminfo[0].shape;
     *__Pyx_BufPtrStrided1d(__pyx_t_10tour_graph_DTYPE_t *, __pyx_pybuffernd_data.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_data.diminfo[0].strides) = __pyx_t_8;
   }
 
-  /* "tour_graph.pyx":117
+  /* "tour_graph.pyx":121
  *     for i in range(n):
  *         data[i] = tour_graph(graph, start=start, start_method=start_method, MAX_ITER=MAX_ITER)[0]
  *     return data             # <<<<<<<<<<<<<<
@@ -2926,9 +2900,9 @@ static PyObject *__pyx_pf_10tour_graph_4_run_simulation(CYTHON_UNUSED PyObject *
   __pyx_r = ((PyObject *)__pyx_v_data);
   goto __pyx_L0;
 
-  /* "tour_graph.pyx":94
+  /* "tour_graph.pyx":98
  * 
- * 
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _run_simulation(np.ndarray[DTYPE_t, ndim=2] graph not None, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
  *     """
  *     Runs n tours on the given graph and returns the tour time for each tour.
@@ -2960,7 +2934,7 @@ static PyObject *__pyx_pf_10tour_graph_4_run_simulation(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "tour_graph.pyx":119
+/* "tour_graph.pyx":123
  *     return data
  * 
  * def run_simulation(np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
@@ -3024,7 +2998,7 @@ static PyObject *__pyx_pw_10tour_graph_7run_simulation(PyObject *__pyx_self, PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run_simulation") < 0)) __PYX_ERR(0, 119, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run_simulation") < 0)) __PYX_ERR(0, 123, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3039,32 +3013,32 @@ static PyObject *__pyx_pw_10tour_graph_7run_simulation(PyObject *__pyx_self, PyO
     }
     __pyx_v_graph = ((PyArrayObject *)values[0]);
     if (values[1]) {
-      __pyx_v_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L3_error)
+      __pyx_v_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L3_error)
     } else {
       __pyx_v_n = ((int)0x3E8);
     }
     if (values[2]) {
-      __pyx_v_start = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L3_error)
+      __pyx_v_start = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_start == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L3_error)
     } else {
       __pyx_v_start = ((int)0);
     }
     __pyx_v_start_method = ((PyObject*)values[3]);
     if (values[4]) {
-      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L3_error)
+      __pyx_v_MAX_ITER = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_MAX_ITER == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L3_error)
     } else {
       __pyx_v_MAX_ITER = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("run_simulation", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 119, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("run_simulation", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 123, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tour_graph.run_simulation", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph), __pyx_ptype_5numpy_ndarray, 1, "graph", 0))) __PYX_ERR(0, 119, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_graph), __pyx_ptype_5numpy_ndarray, 1, "graph", 0))) __PYX_ERR(0, 123, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start_method), (&PyString_Type), 1, "start_method", 1))) __PYX_ERR(0, 123, __pyx_L1_error)
   __pyx_r = __pyx_pf_10tour_graph_6run_simulation(__pyx_self, __pyx_v_graph, __pyx_v_n, __pyx_v_start, __pyx_v_start_method, __pyx_v_MAX_ITER);
 
   /* function exit code */
@@ -3086,66 +3060,66 @@ static PyObject *__pyx_pf_10tour_graph_6run_simulation(CYTHON_UNUSED PyObject *_
   __Pyx_RefNannySetupContext("run_simulation", 0);
   __Pyx_INCREF((PyObject *)__pyx_v_graph);
 
-  /* "tour_graph.pyx":138
+  /* "tour_graph.pyx":142
  *     :return: (numpy array) tour times for each tour
  *     """
  *     graph = np.asarray(graph, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     return _run_simulation(graph, n=n, start=start, start_method=start_method, MAX_ITER=MAX_ITER)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)__pyx_v_graph));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_graph));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_graph));
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 138, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 138, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_DECREF_SET(__pyx_v_graph, ((PyArrayObject *)__pyx_t_4));
   __pyx_t_4 = 0;
 
-  /* "tour_graph.pyx":139
+  /* "tour_graph.pyx":143
  *     """
  *     graph = np.asarray(graph, dtype=DTYPE)
  *     return _run_simulation(graph, n=n, start=start, start_method=start_method, MAX_ITER=MAX_ITER)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_run_simulation); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_run_simulation); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(((PyObject *)__pyx_v_graph));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_graph));
   PyTuple_SET_ITEM(__pyx_t_3, 0, ((PyObject *)__pyx_v_graph));
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_n); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_n, __pyx_t_2) < 0) __PYX_ERR(0, 139, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_n, __pyx_t_2) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(0, 139, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start_method, __pyx_v_start_method) < 0) __PYX_ERR(0, 139, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_MAX_ITER); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start_method, __pyx_v_start_method) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_MAX_ITER); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_MAX_ITER, __pyx_t_2) < 0) __PYX_ERR(0, 139, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_MAX_ITER, __pyx_t_2) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3154,7 +3128,7 @@ static PyObject *__pyx_pf_10tour_graph_6run_simulation(CYTHON_UNUSED PyObject *_
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "tour_graph.pyx":119
+  /* "tour_graph.pyx":123
  *     return data
  * 
  * def run_simulation(np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
@@ -5770,8 +5744,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) __PYX_ERR(0, 62, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 119, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 218, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 799, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 989, __pyx_L1_error)
@@ -5784,36 +5758,36 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "tour_graph.pyx":46
+  /* "tour_graph.pyx":49
  *     # implement method for choosing start
  *     if start_method == 'uniform_random':
  *         start = np.random.randint(0,high=g.shape[0],size=1, dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *     cdef int v = start
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "tour_graph.pyx":54
+  /* "tour_graph.pyx":57
  *     while visited.sum() != num_vertices:
  *         counter += 1
  *         v = np.random.choice(np.arange(g.shape[0])[g[v,:] > 0])             # <<<<<<<<<<<<<<
  *         visited[v] = 1
  *         if v in visit_dict.keys():
  */
-  __pyx_slice__2 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_slice__2 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
 
-  /* "tour_graph.pyx":62
+  /* "tour_graph.pyx":65
  *         if MAX_ITER != -1:
  *             if counter >=MAX_ITER:
  *                 raise StopIteration('number of iterations has reached specified MAX_ITER.')             # <<<<<<<<<<<<<<
  * 
  *     return counter, visit_dict
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_number_of_iterations_has_reached); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_number_of_iterations_has_reached); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
@@ -5914,53 +5888,53 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
-  /* "tour_graph.pyx":8
- * 
- * 
+  /* "tour_graph.pyx":11
+ * cimport cython
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _tour_graph(np.ndarray[DTYPE_t, ndim=2] g not None, int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
  *     """
  *     Tours a graph (random walk) and returns tour time and tour stops.
  */
-  __pyx_tuple__13 = PyTuple_Pack(10, __pyx_n_s_g, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER, __pyx_n_s_seed, __pyx_n_s_num_vertices, __pyx_n_s_visited, __pyx_n_s_visit_dict, __pyx_n_s_v, __pyx_n_s_counter); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(10, __pyx_n_s_g, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER, __pyx_n_s_seed, __pyx_n_s_num_vertices, __pyx_n_s_visited, __pyx_n_s_visit_dict, __pyx_n_s_v, __pyx_n_s_counter); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(5, 0, 10, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_tour_graph, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(5, 0, 10, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_tour_graph, 11, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 11, __pyx_L1_error)
 
-  /* "tour_graph.pyx":66
+  /* "tour_graph.pyx":69
  *     return counter, visit_dict
  * 
  * def tour_graph(np.ndarray graph , int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
  *     """
  *     Tours a graph (random walk) and returns tour time and tour stops.
  */
-  __pyx_tuple__15 = PyTuple_Pack(6, __pyx_n_s_graph, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER, __pyx_n_s_seed, __pyx_n_s_g); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(6, __pyx_n_s_graph, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER, __pyx_n_s_seed, __pyx_n_s_g); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(5, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_tour_graph_2, 66, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(5, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_tour_graph_2, 69, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 69, __pyx_L1_error)
 
-  /* "tour_graph.pyx":94
+  /* "tour_graph.pyx":98
  * 
- * 
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _run_simulation(np.ndarray[DTYPE_t, ndim=2] graph not None, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
  *     """
  *     Runs n tours on the given graph and returns the tour time for each tour.
  */
-  __pyx_tuple__17 = PyTuple_Pack(7, __pyx_n_s_graph, __pyx_n_s_n, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER, __pyx_n_s_data, __pyx_n_s_i); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(7, __pyx_n_s_graph, __pyx_n_s_n, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER, __pyx_n_s_data, __pyx_n_s_i); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(5, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_run_simulation, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(5, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_run_simulation, 98, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 98, __pyx_L1_error)
 
-  /* "tour_graph.pyx":119
+  /* "tour_graph.pyx":123
  *     return data
  * 
  * def run_simulation(np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
  *     """
  *     Runs n tours on the given graph and returns the tour time for each tour.
  */
-  __pyx_tuple__19 = PyTuple_Pack(5, __pyx_n_s_graph, __pyx_n_s_n, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(5, __pyx_n_s_graph, __pyx_n_s_n, __pyx_n_s_start, __pyx_n_s_start_method, __pyx_n_s_MAX_ITER); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_run_simulation_2, 119, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_kennypotts_Desktop_Probab, __pyx_n_s_run_simulation_2, 123, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6093,67 +6067,67 @@ PyMODINIT_FUNC PyInit_tour_graph(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "tour_graph.pyx":4
- * cimport numpy as np
+  /* "tour_graph.pyx":6
+ * # np.import_array()
  * 
  * DTYPE = np.int             # <<<<<<<<<<<<<<
  * ctypedef np.int_t DTYPE_t
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "tour_graph.pyx":8
- * 
- * 
+  /* "tour_graph.pyx":11
+ * cimport cython
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _tour_graph(np.ndarray[DTYPE_t, ndim=2] g not None, int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
  *     """
  *     Tours a graph (random walk) and returns tour time and tour stops.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_1_tour_graph, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_1_tour_graph, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tour_graph, __pyx_t_2) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tour_graph, __pyx_t_2) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "tour_graph.pyx":66
+  /* "tour_graph.pyx":69
  *     return counter, visit_dict
  * 
  * def tour_graph(np.ndarray graph , int start=0, str start_method = 'int', int MAX_ITER =-1, int seed=-1):             # <<<<<<<<<<<<<<
  *     """
  *     Tours a graph (random walk) and returns tour time and tour stops.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_3tour_graph, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_3tour_graph, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tour_graph_2, __pyx_t_2) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tour_graph_2, __pyx_t_2) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "tour_graph.pyx":94
+  /* "tour_graph.pyx":98
  * 
- * 
+ * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def _run_simulation(np.ndarray[DTYPE_t, ndim=2] graph not None, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
  *     """
  *     Runs n tours on the given graph and returns the tour time for each tour.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_5_run_simulation, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_5_run_simulation, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_run_simulation, __pyx_t_2) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_run_simulation, __pyx_t_2) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "tour_graph.pyx":119
+  /* "tour_graph.pyx":123
  *     return data
  * 
  * def run_simulation(np.ndarray graph, int n=1000, int start=0, str start_method = 'int', int MAX_ITER =-1):             # <<<<<<<<<<<<<<
  *     """
  *     Runs n tours on the given graph and returns the tour time for each tour.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_7run_simulation, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_10tour_graph_7run_simulation, NULL, __pyx_n_s_tour_graph_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_run_simulation_2, __pyx_t_2) < 0) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_run_simulation_2, __pyx_t_2) < 0) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "tour_graph.pyx":1
@@ -7321,12 +7295,6 @@ return_ne:
     #endif
     return (equals == Py_NE);
 #endif
-}
-
-/* BufferIndexError */
-      static void __Pyx_RaiseBufferIndexError(int axis) {
-  PyErr_Format(PyExc_IndexError,
-     "Out of bounds on buffer access (axis %d)", axis);
 }
 
 /* PyObjectCallNoArg */
